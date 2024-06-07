@@ -6,6 +6,7 @@ import cookieParser from "cookie-parser";
 import compression from "compression";
 import mongoose from "mongoose";
 import router from "../src/router";
+import { appendFile } from "fs";
 
 require("dotenv").config();
 const app = express();
@@ -33,3 +34,5 @@ mongoose.connect(MONGO_URL);
 mongoose.connection.on("error", (error: Error) => console.log(error));
 
 app.use("/api", router());
+
+export default app;
