@@ -37,8 +37,13 @@ export const login = async (req: express.Request, res: express.Response) => {
     await user[0].save();
 
     res.cookie(envConfigs.SECRET_TOKEN, user[0].authentication.sessionToken, {
-      domain: "localhost",
+      domain:
+        envConfigs.NODE_ENV === "production"
+          ? "tmapi-blue.vercel.app"
+          : "localhost",
       path: "/",
+      httpOnly: true,
+      secure: false,
     });
 
     return res.status(200).json(user).end();
