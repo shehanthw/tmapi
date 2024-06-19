@@ -90,7 +90,12 @@ export const register = async (req: express.Request, res: express.Response) => {
 
 export const logout = async (req: express.Request, res: express.Response) => {
   try {
-    res.cookie(envConfigs.SECRET_TOKEN, "", { expires: new Date(0) });
+    res.cookie(envConfigs.SECRET_TOKEN, "", {
+      httpOnly: true,
+      secure: true,
+      sameSite: "none",
+      expires: new Date(0),
+    });
     return res.status(200).json({ message: "Logout Success" }).end();
   } catch (error: any) {
     return res.status(400).json({ error: error.message }).end();
