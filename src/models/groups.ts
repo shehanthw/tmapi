@@ -1,40 +1,41 @@
 import mongoose from "mongoose";
 
-const UserSchema = new mongoose.Schema(
+const GroupSchema = new mongoose.Schema(
   {
-    username: {
+    creator: {
       type: String,
-      required: [true, "Please provide a username"],
-      unique: true,
+      required: [true, "Please provide the creators email"],
     },
-    email: {
-      type: String,
-      required: [true, "Please provide an email"],
-      unique: true,
-    },
-    authentication: {
-      password: {
+    members: [
+      {
         type: String,
-        required: [true, "Please provide a password"],
-        select: false,
       },
-      salt: { type: String, select: false },
-      sessionToken: { type: String, select: false },
+    ],
+    title: {
+      type: String,
+      required: [true, "Please provide a title"],
+    },
+    description: {
+      type: String,
+      required: [true, "Please provide a description"],
     },
   },
   { timestamps: true }
 );
 
-export const UserModel =
-  mongoose.models.User || mongoose.model("User", UserSchema);
+export const GroupModel =
+  mongoose.models.Group || mongoose.model("Group", GroupSchema);
 
-export const getUsers = () => UserModel.find();
-export const getUserByEmail = (email: String) => UserModel.find({ email });
-export const getUserBySessionToken = (token: String) =>
-  UserModel.find({ "authentication.sessionToken": token });
-export const getUserById = (id: String) => UserModel.findById(id);
-export const createUser = (values: Record<string, any>) =>
-  new UserModel(values).save().then((user: any) => user.toObject());
-export const deleteUserById = (id: String) => UserModel.findByIdAndDelete(id);
-export const updateUserById = (id: String, values: Record<string, any>) =>
-  UserModel.findByIdAndUpdate(id, values);
+export const getGroups = () => GroupModel.find();
+export const getGroupByCreator = (creator: String) =>
+  GroupModel.find({ creator });
+export const getGroupById = (id: String) => GroupModel.findById(id);
+export const getGroupByMember = (email: String) =>
+  GroupModel.find({
+    $or: [{ creator: email }, { members: email }],
+  });
+export const createGroup = (values: Record<string, any>) =>
+  new GroupModel(values).save().then((Group: any) => Group.toObject());
+export const deleteGroupById = (id: String) => GroupModel.findByIdAndDelete(id);
+export const updateGroupById = (id: String, values: Record<string, any>) =>
+  GroupModel.findByIdAndUpdate(id, values);

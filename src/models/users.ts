@@ -38,3 +38,5 @@ export const createUser = (values: Record<string, any>) =>
 export const deleteUserById = (id: String) => UserModel.findByIdAndDelete(id);
 export const updateUserById = (id: String, values: Record<string, any>) =>
   UserModel.findByIdAndUpdate(id, values);
+export const getUsersExceptCurrent = (currentUserId: String) =>
+  UserModel.find({ _id: { $ne: currentUserId } });

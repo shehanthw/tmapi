@@ -6,10 +6,11 @@ interface Config {
   MONGO_URL: string;
   SECRET_TOKEN: string;
   NODE_ENV: string;
+  ORIGIN: string;
 }
 
 const getConfig = (): Config => {
-  const { PORT, MONGO_URL, SECRET_TOKEN, NODE_ENV } = process.env;
+  const { PORT, MONGO_URL, SECRET_TOKEN, NODE_ENV, ORIGIN } = process.env;
 
   if (!MONGO_URL) {
     throw new Error("Missing MONGO_URL environment variable");
@@ -20,6 +21,7 @@ const getConfig = (): Config => {
     MONGO_URL,
     SECRET_TOKEN: SECRET_TOKEN!,
     NODE_ENV: NODE_ENV!,
+    ORIGIN: ORIGIN!,
   };
 };
 

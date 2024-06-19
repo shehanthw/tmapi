@@ -6,13 +6,13 @@ import cookieParser from "cookie-parser";
 import compression from "compression";
 import mongoose from "mongoose";
 import router from "../src/router";
-import { appendFile } from "fs";
+import envConfigs from "../src/config/envConfig";
 
-require("dotenv").config();
 const app = express();
 
 app.use(
   cors({
+    origin: envConfigs.ORIGIN,
     credentials: true,
   })
 );
@@ -26,8 +26,7 @@ server.listen(8000, () => {
   console.log(`Server is running on http://localhost:8000`);
 });
 
-const MONGO_URL =
-  "mongodb+srv://shehan:Shehan123456@cluster0.yjed8ln.mongodb.net/kanban?retryWrites=true&w=majority&appName=Cluster0";
+const MONGO_URL = envConfigs.MONGO_URL;
 
 mongoose.Promise = Promise;
 mongoose.connect(MONGO_URL);
